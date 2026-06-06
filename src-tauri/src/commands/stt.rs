@@ -29,8 +29,8 @@ fn truncate_safe(s: &str, max_bytes: usize) -> &str {
     }
     &s[..end]
 }
-use rhema_audio::{AudioConfig, AudioFrame};
-use rhema_stt::{DeepgramClient, SttConfig, SttProvider, TranscriptEvent};
+use logos_audio::{AudioConfig, AudioFrame};
+use logos_stt::{DeepgramClient, SttConfig, SttProvider, TranscriptEvent};
 
 /// Start the full audio-capture-to-transcription pipeline.
 ///
@@ -104,7 +104,7 @@ pub async fn start_transcription(
                 model_path.display()
             );
 
-            Box::new(rhema_stt::WhisperProvider::new(
+            Box::new(logos_stt::WhisperProvider::new(
                 model_path,
                 None,
                 n_threads,
@@ -192,7 +192,7 @@ pub async fn start_transcription(
                 let (audio_tx, audio_rx) = crossbeam_channel::bounded::<AudioFrame>(64);
                 device_lost.store(false, Ordering::SeqCst);
 
-                let capture = match rhema_audio::capture::start(
+                let capture = match logos_audio::capture::start(
                     config,
                     audio_tx,
                     device_lost.clone(),
@@ -264,7 +264,7 @@ pub async fn start_transcription(
                             // (a) Compute audio levels at ~15 Hz
                             //     At 16 kHz with ~1024-sample frames, every 4th frame is ~15 Hz.
                             if frame_count % 4 == 0 {
-                                let level = rhema_audio::meter::compute_level(&frame.samples);
+                                let level = logos_audio::meter::compute_level(&frame.samples);
                                 let _ = fan_app.emit(
                                     EVENT_AUDIO_LEVEL,
                                     AudioLevelPayload {
@@ -493,7 +493,7 @@ pub async fn start_transcription(
 /// Returns true if high-confidence results were found (>= 0.90).
 #[expect(clippy::similar_names, reason = "merger and merged are naturally named")]
 fn run_direct_detection(app: &AppHandle, transcript: &str) -> bool {
-    use rhema_detection::{DirectDetector, DetectionMerger};
+    use logos_detection::{DirectDetector, DetectionMerger};
 
     let t0 = std::time::Instant::now();
     let detector_state: State<'_, Mutex<DirectDetector>> = app.state();
@@ -681,7 +681,7 @@ fn run_semantic_detection(app: &AppHandle, transcript: &str) {
 /// Returns `true` when reading mode handled the transcript (suppresses semantic).
 #[expect(clippy::too_many_lines, reason = "sequential state-machine logic is clearer in one flow")]
 fn check_reading_mode(app: &AppHandle, transcript: &str, direct_found: bool) -> bool {
-    use rhema_detection::ReadingMode;
+    use logos_detection::ReadingMode;
 
     // If direct detection found a verse, consider starting/restarting reading mode.
     // BUT: if reading mode is already active on a book/chapter, do NOT restart
@@ -689,7 +689,7 @@ fn check_reading_mode(app: &AppHandle, transcript: &str, direct_found: bool) -> 
     // getting matched as "Job 3:5") would hijack the reading session.
     if direct_found {
         let verse_info = {
-            let detector_state: State<'_, Mutex<rhema_detection::DirectDetector>> = app.state();
+            let detector_state: State<'_, Mutex<logos_detection::DirectDetector>> = app.state();
             let Ok(detector) = detector_state.lock() else { return false };
             detector.recent_detections().front().cloned()
         };
@@ -697,7 +697,7 @@ fn check_reading_mode(app: &AppHandle, transcript: &str, direct_found: bool) -> 
         if let Some(recent) = verse_info {
             // Get the confidence of the detection to distinguish explicit refs from false positives
             let detection_confidence = {
-                let detector_state: State<'_, Mutex<rhema_detection::DirectDetector>> = app.state();
+                let detector_state: State<'_, Mutex<logos_detection::DirectDetector>> = app.state();
                 detector_state.lock().ok()
                     .and_then(|d| d.recent_detections().front().map(|_| 0.95)) // Direct detections are always high confidence
                     .unwrap_or(0.0)
@@ -840,7 +840,7 @@ fn check_reading_mode(app: &AppHandle, transcript: &str, direct_found: bool) -> 
 
                     // Emit the starting verse of the new chapter
                     let reference = format!("{} {}:{}", change.book_name, change.new_chapter, start_verse);
-                    let advance = rhema_detection::ReadingAdvance {
+                    let advance = logos_detection::ReadingAdvance {
                         book_number: change.book_number,
                         book_name: change.book_name.clone(),
                         chapter: change.new_chapter,
@@ -884,7 +884,7 @@ fn check_translation_command(app: &AppHandle, transcript: &str) {
         translation_id: i64,
     }
 
-    let detector_state: State<'_, Mutex<rhema_detection::DirectDetector>> = app.state();
+    let detector_state: State<'_, Mutex<logos_detection::DirectDetector>> = app.state();
     let Ok(detector) = detector_state.lock() else { return };
 
     if let Some(abbrev) = detector.detect_translation_command(transcript) {

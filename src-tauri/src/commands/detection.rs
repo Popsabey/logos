@@ -6,7 +6,7 @@ use std::sync::Mutex;
 use serde::Serialize;
 use tauri::State;
 
-use rhema_detection::{DetectionPipeline, MergedDetection, ReadingMode};
+use logos_detection::{DetectionPipeline, MergedDetection, ReadingMode};
 
 use crate::state::AppState;
 
@@ -36,10 +36,10 @@ pub struct DetectionResult {
     pub is_chapter_only: bool,
 }
 
-fn source_to_string(source: &rhema_detection::DetectionSource) -> String {
+fn source_to_string(source: &logos_detection::DetectionSource) -> String {
     match source {
-        rhema_detection::DetectionSource::DirectReference => "direct".to_string(),
-        rhema_detection::DetectionSource::Semantic { .. } => "semantic".to_string(),
+        logos_detection::DetectionSource::DirectReference => "direct".to_string(),
+        logos_detection::DetectionSource::Semantic { .. } => "semantic".to_string(),
     }
 }
 

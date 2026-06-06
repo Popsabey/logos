@@ -1,12 +1,12 @@
 export const SITE = {
-  name: "Rhema",
+  name: "Logos",
   legalName: "openbezal",
-  tagline: "Your Pastor speaks. Rhema finds the verse.",
+  tagline: "Your Pastor speaks. Logos finds the verse.",
   shortDescription:
     "Real-time AI Bible verse detection for live sermons. Free, open-source, broadcast-ready via NDI.",
   description:
-    "Rhema listens to a live sermon audio feed, transcribes speech in real time, detects Bible verse references (both explicit citations and quoted passages), and renders them as broadcast-ready overlays via NDI for live production.",
-  url: "https://openrhema.com",
+    "Logos listens to a live sermon audio feed, transcribes speech in real time, detects Bible verse references (both explicit citations and quoted passages), and renders them as broadcast-ready overlays via NDI for live production.",
+  url: "https://openlogos.com",
   locale: "en_US",
   twitterHandle: "@openbezal",
   founded: "2025",
@@ -14,14 +14,14 @@ export const SITE = {
   operatingSystems: ["Windows", "macOS"],
   repo: {
     owner: "openbezal",
-    name: "rhema",
-    url: "https://github.com/openbezal/rhema",
-    releasesLatest: "https://github.com/openbezal/rhema/releases/latest",
-    discussions: "https://github.com/openbezal/rhema/discussions",
+    name: "logos",
+    url: "https://github.com/openbezal/logos",
+    releasesLatest: "https://github.com/openbezal/logos/releases/latest",
+    discussions: "https://github.com/openbezal/logos/discussions",
     stars: { fallback: 221 },
   },
   socials: {
-    github: "https://github.com/openbezal/rhema",
+    github: "https://github.com/openbezal/logos",
     twitter: "https://x.com/openbezal",
     linkedin: "https://www.linkedin.com/company/openbezal",
     email: "mailto:hello@openbezal.com",

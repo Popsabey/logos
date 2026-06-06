@@ -3,6 +3,7 @@ import { PanelHeader } from "@/components/ui/panel-header"
 import { LevelMeter } from "@/components/ui/level-meter"
 import { Button } from "@/components/ui/button"
 import { ApiKeyPrompt } from "@/components/ui/api-key-prompt"
+import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
 import { MicIcon, MicOffIcon } from "lucide-react"
 import {
   useAudioStore,
@@ -42,7 +43,7 @@ function LivePartialLine({ scrollRef }: { scrollRef: RefObject<HTMLDivElement | 
 
   return (
     <p className="border-l-2 border-primary pl-2 text-base leading-relaxed text-foreground">
-      {currentPartial}
+      <FormattedVerseText text={currentPartial} />
       <span className="ml-1 inline-block size-1.5 animate-pulse rounded-full bg-primary align-middle" />
     </p>
   )

@@ -8,7 +8,7 @@ import {
   IconMail,
 } from "@tabler/icons-react";
 import { Container } from "../ui/container";
-import { RhemaLogo } from "../ui/rhema-logo";
+import { LogosLogo } from "../ui/logos-logo";
 import { SITE } from "../../_lib/site";
 
 const GROUPS = [
@@ -55,7 +55,7 @@ export function SiteFooter() {
       <Container>
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] md:gap-8">
           <div className="flex flex-col gap-3">
-            <RhemaLogo />
+            <LogosLogo />
             <p className="max-w-[280px] text-lg leading-6 tracking-[-0.01em] text-muted-foreground">
               AI-powered real-time Bible verse detection for churches. Scripture
               on screen, the instant it&apos;s spoken.
@@ -96,7 +96,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-[13px] leading-5 text-subtle-foreground md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Rhema. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Logos. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a
               href={SITE.socials.github}

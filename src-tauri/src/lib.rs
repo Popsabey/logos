@@ -22,11 +22,11 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .manage(Mutex::new(state::AppState::new()))
-        .manage(Mutex::new(rhema_detection::DetectionPipeline::new()))
-        .manage(Mutex::new(rhema_broadcast::ndi::NdiRuntime::default()))
-        .manage(Mutex::new(rhema_detection::DirectDetector::new()))
-        .manage(Mutex::new(rhema_detection::DetectionMerger::new()))
-        .manage(Mutex::new(rhema_detection::ReadingMode::new()))
+        .manage(Mutex::new(logos_detection::DetectionPipeline::new()))
+        .manage(Mutex::new(logos_broadcast::ndi::NdiRuntime::default()))
+        .manage(Mutex::new(logos_detection::DirectDetector::new()))
+        .manage(Mutex::new(logos_detection::DetectionMerger::new()))
+        .manage(Mutex::new(logos_detection::ReadingMode::new()))
         .manage(Mutex::new(commands::remote::OscRuntime::new()))
         .manage(Mutex::new(commands::remote::HttpRuntime::new()))
         .invoke_handler(tauri::generate_handler![
@@ -73,16 +73,16 @@ pub fn run() {
             let db_path = app
                 .path()
                 .resource_dir()
-                .map(|p| p.join("rhema.db"))
+                .map(|p| p.join("logos.db"))
                 .ok()
                 .filter(|p| p.exists())
                 .unwrap_or_else(|| {
                     std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                        .join("../data/rhema.db")
+                        .join("../data/logos.db")
                 });
 
             if db_path.exists() {
-                let bible_db = rhema_bible::BibleDb::open(&db_path)
+                let bible_db = logos_bible::BibleDb::open(&db_path)
                     .expect("Failed to open Bible database");
 
                 let managed_state = app.state::<Mutex<state::AppState>>();
@@ -114,23 +114,24 @@ pub fn run() {
             let embeddings_path = base_dir.join("embeddings/kjv-qwen3-0.6b.bin");
             let ids_path = base_dir.join("embeddings/kjv-qwen3-0.6b-ids.bin");
 
+            /*
             if model_path.exists() && tokenizer_path.exists() {
-                use rhema_detection::semantic::embedder::TextEmbedder;
-                use rhema_detection::semantic::index::VectorIndex;
-                match rhema_detection::OnnxEmbedder::load(&model_path, &tokenizer_path) {
+                use logos_detection::semantic::embedder::TextEmbedder;
+                use logos_detection::semantic::index::VectorIndex;
+                match logos_detection::OnnxEmbedder::load(&model_path, &tokenizer_path) {
                     Ok(embedder) => {
                         log::info!("ONNX embedding model loaded");
-                        let managed_pipeline = app.state::<Mutex<rhema_detection::DetectionPipeline>>();
+                        let managed_pipeline = app.state::<Mutex<logos_detection::DetectionPipeline>>();
                         let mut pipeline = managed_pipeline.lock().unwrap();
 
                         // If pre-computed embeddings exist, load the vector index
                         if embeddings_path.exists() && ids_path.exists() {
                             let dim = embedder.dimension();
-                            match rhema_detection::HnswVectorIndex::load(&embeddings_path, &ids_path, dim) {
+                            match logos_detection::HnswVectorIndex::load(&embeddings_path, &ids_path, dim) {
                                 Ok(index) => {
                                     log::info!("Verse embeddings loaded ({} vectors)", index.len());
                                     pipeline.set_semantic(
-                                        rhema_detection::SemanticDetector::new(
+                                        logos_detection::SemanticDetector::new(
                                             Box::new(embedder),
                                             Box::new(index),
                                         ),
@@ -151,6 +152,7 @@ pub fn run() {
             } else {
                 log::info!("ONNX model not found. Semantic search disabled. Run 'bun run download:model' to download.");
             }
+            */
 
             Ok(())
         })

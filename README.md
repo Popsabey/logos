@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="public/rhema.svg" alt="Rhema logo" width="160" height="160" />
+  <img src="public/logos.svg" alt="Logos logo" width="160" height="160" />
 </p>
 
-<h1 align="center">Rhema</h1>
+<h1 align="center">Logos</h1>
 
 <p align="center">Real-time AI-powered Bible verse detection for live sermons and broadcasts. A Tauri v2 desktop app with a React frontend and Rust backend.</p>
 
-Rhema listens to a live sermon audio feed, transcribes speech in real time, detects Bible verse references (both explicit citations and quoted passages), and renders them as broadcast-ready overlays via NDI for live production.
+Logos listens to a live sermon audio feed, transcribes speech in real time, detects Bible verse references (both explicit citations and quoted passages), and renders them as broadcast-ready overlays via NDI for live production.
 
 ## Features
 
@@ -50,13 +50,13 @@ Rhema listens to a live sermon audio feed, transcribes speech in real time, dete
 
 | Crate | Purpose |
 |---|---|
-| `rhema-audio` | Audio device enumeration, capture, VAD (cpal) |
-| `rhema-stt` | Local Whisper (gated behind `whisper` Cargo feature) and Deepgram STT streaming + REST fallback |
-| `rhema-bible` | SQLite Bible DB, FTS5 search, cross-references |
-| `rhema-detection` | Verse detection pipeline: direct, semantic, quotation, ensemble merger, sentence buffer, sermon context, reading mode |
-| `rhema-broadcast` | NDI video frame output via FFI |
-| `rhema-api` | Tauri command API layer |
-| `rhema-notes` | (placeholder) |
+| `logos-audio` | Audio device enumeration, capture, VAD (cpal) |
+| `logos-stt` | Local Whisper (gated behind `whisper` Cargo feature) and Deepgram STT streaming + REST fallback |
+| `logos-bible` | SQLite Bible DB, FTS5 search, cross-references |
+| `logos-detection` | Verse detection pipeline: direct, semantic, quotation, ensemble merger, sentence buffer, sermon context, reading mode |
+| `logos-broadcast` | NDI video frame output via FFI |
+| `logos-api` | Tauri command API layer |
+| `logos-notes` | (placeholder) |
 
 ## Prerequisites
 
@@ -107,7 +107,7 @@ Windows needs an extra build-tools bootstrap before the shared setup pipeline �
 
 ```bash
 git clone <repo-url>
-cd rhema
+cd logos
 bun install
 ```
 
@@ -125,7 +125,7 @@ This runs 7 idempotent phases in sequence, skipping any whose output artifacts a
 
 1. Python environment (`.venv` + pip deps: `optimum-onnx[onnxruntime]`, `sentence-transformers`, `accelerate`, `tokenizers`, `numpy`, `torch`, `meaningless`)
 2. Download Bible source data — single bundled archive containing all 10 translations plus the openbible.info cross-references zip
-3. Build SQLite Bible database (`data/rhema.db` with FTS5 + cross-references)
+3. Build SQLite Bible database (`data/logos.db` with FTS5 + cross-references)
 4. Download & export ONNX model (`Qwen3-Embedding-0.6B`) + INT8 quantization for ARM64
 5. Export KJV verses to JSON for embedding precomputation
 6. Precompute verse embeddings (GPU sentence-transformers when available, ONNX CPU fallback otherwise)
@@ -135,7 +135,7 @@ This runs 7 idempotent phases in sequence, skipping any whose output artifacts a
 
 #### Speech-to-Text Options
 
-Rhema supports two speech-to-text engines:
+Logos supports two speech-to-text engines:
 
 **Option 1: Whisper (Local, Free)**
 Whisper runs locally on your machine with no API costs or per-minute billing.
@@ -187,7 +187,7 @@ bun run tauri build
 ## Project Structure
 
 ```
-rhema/
+logos/
 ├── src/                          # React frontend
 │   ├── components/
 │   │   ├── broadcast/            # Theme designer, NDI settings
@@ -256,7 +256,7 @@ rhema/
 
 ## Security
 
-Rhema enforces a restrictive Content Security Policy on the Tauri webview to prevent script injection and unauthorized data exfiltration. The policy is defined in `src-tauri/tauri.conf.json`; see **[SECURITY.md](.github/SECURITY.md)** for the directive-by-directive rationale, threat model, and vulnerability reporting process.
+Logos enforces a restrictive Content Security Policy on the Tauri webview to prevent script injection and unauthorized data exfiltration. The policy is defined in `src-tauri/tauri.conf.json`; see **[SECURITY.md](.github/SECURITY.md)** for the directive-by-directive rationale, threat model, and vulnerability reporting process.
 
 ## Environment Variables
 

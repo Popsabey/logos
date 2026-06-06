@@ -1,6 +1,7 @@
 import { PanelHeader } from "@/components/ui/panel-header"
 import { ConfidenceDot } from "@/components/ui/confidence-dot"
 import { Button } from "@/components/ui/button"
+import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
 import { PlayIcon, PlusIcon } from "lucide-react"
 import { useDetection, detectionActions } from "@/hooks/use-detection"
 import { bibleActions } from "@/hooks/use-bible"
@@ -67,8 +68,8 @@ function DetectionCard({ detection }: { detection: DetectionResult }) {
       </div>
 
       {detection.verse_text && (
-        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-          {detection.verse_text}
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground border-l-2 border-primary/20 pl-3">
+          <FormattedVerseText text={detection.verse_text} />
         </p>
       )}
 

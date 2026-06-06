@@ -28,21 +28,21 @@ missing_errors_doc = "allow"
 missing_panics_doc = "allow"
 
 [package]
-name = "rhema"
+name = "logos"
 version = "0.1.0"
-description = "Rhema - Real-Time AI Bible Verse Detection"
+description = "Logos - Real-Time AI Bible Verse Detection"
 authors = ["Faithful"]
 license = "MIT"
-repository = "https://github.com/openbezal/rhema"
+repository = "https://github.com/your-username/logos"
 edition = "2021"
 rust-version = "1.77.2"
 
 [lib]
-name = "rhema_lib"
+name = "logos_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [[bin]]
-name = "Rhema"
+name = "Logos"
 path = "src/main.rs"
 
 [build-dependencies]
@@ -56,12 +56,12 @@ tokio.workspace = true
 tauri = { version = "2.10.3", features = [] }
 tauri-plugin-log = "2"
 tauri-plugin-store = "2"
-rhema-audio = { path = "crates/audio" }
-rhema-bible = { path = "crates/bible" }
-rhema-stt = { path = "crates/stt" }
-rhema-broadcast = { path = "crates/broadcast" }
-rhema-detection = { path = "crates/detection", features = ["onnx", "vector-search"] }
-rhema-api = { path = "crates/api" }
+logos-audio = { path = "crates/audio" }
+logos-bible = { path = "crates/bible" }
+logos-stt = { path = "crates/stt" }
+logos-broadcast = { path = "crates/broadcast" }
+logos-detection = { path = "crates/detection", features = ["vector-search"] }
+logos-api = { path = "crates/api" }
 crossbeam-channel = "0.5"
 dotenvy = "0.15"
 base64 = "0.22"
@@ -71,7 +71,7 @@ tauri-plugin-fs = "2"
 
 [features]
 default = ["whisper"]
-whisper = ["rhema-stt/whisper"]
+whisper = ["logos-stt/whisper"]
 
 [lints]
 workspace = true

@@ -30,6 +30,7 @@ import { useBibleStore, useQueueStore } from "@/stores"
 import type { Book, Verse, SemanticSearchResult } from "@/types"
 import { Input } from "@/components/ui/input"
 import { searchContextWithFuse } from "@/lib/context-search"
+import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
 
 type SearchTab = "book" | "context" 
 
@@ -51,11 +52,11 @@ function HighlightedText({ text, query }: { text: string; query: string }) {
         if (cleaned.length >= 2 && queryWords.has(cleaned)) {
           return (
             <mark key={i} className="rounded-[2px] bg-emerald-800/90 px-0.5 text-foreground">
-              {part}
+              <FormattedVerseText text={part} />
             </mark>
           )
         }
-        return <span key={i}>{part}</span>
+        return <FormattedVerseText key={i} text={part} />
       })}
     </>
   )
@@ -456,7 +457,7 @@ export function SearchPanel() {
                           {verse.verse}
                         </span>
                         <span className="flex-1 text-muted-foreground line-clamp-1">
-                          {verse.text}
+                          <FormattedVerseText text={verse.text} />
                         </span>
                       </button>
                     ))}
@@ -580,7 +581,7 @@ export function SearchPanel() {
                     {verse.verse}
                   </span>
                   <p className="flex-1 text-sm leading-relaxed text-foreground/80">
-                    {verse.text}
+                    <FormattedVerseText text={verse.text} />
                   </p>
                   {queuedVerseKeys.has(`${verse.book_number}:${verse.chapter}:${verse.verse}`) ? (
                     <TooltipProvider>

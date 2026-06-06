@@ -743,7 +743,7 @@ function RemoteControlSection() {
       <div className="rounded-lg border border-border bg-muted/30 p-3">
         <p className="text-[0.625rem] font-medium text-muted-foreground mb-1">Firewall Note</p>
         <p className="text-[0.625rem] text-muted-foreground leading-relaxed">
-          Your OS may block incoming connections. On macOS, allow Rhema through
+          Your OS may block incoming connections. On macOS, allow Logos through
           System Settings → Network → Firewall. On Windows, allow through
           Windows Security → Firewall → Allow an app.
         </p>
@@ -803,7 +803,7 @@ function HelpSection() {
     <div className="space-y-6">
       <div className="space-y-1">
         <p className="text-sm text-muted-foreground">
-          Resources to help you get the most out of Rhema.
+          Resources to help you get the most out of Logos.
         </p>
       </div>
 

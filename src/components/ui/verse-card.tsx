@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
 
 function VerseCard({
   className,
@@ -45,7 +46,7 @@ function VerseCard({
                   {verseNumber}
                 </sup>
               )}
-              {text}
+              <FormattedVerseText text={text} />
             </p>
           )}
         </>

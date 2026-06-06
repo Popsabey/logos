@@ -454,7 +454,10 @@ function drawVerseText(
     if (vn.visible && segment.verseNumber !== undefined) {
       fullText += `${segment.verseNumber} `
     }
-    fullText += segment.text + " "
+    const cleanedText = segment.text
+      .replace(/[\[<][HG]\d+[\]>]/gi, "")
+      .replace(/<\/?em>/gi, "");
+    fullText += cleanedText + " "
   }
   fullText = applyTextTransform(
     fullText.trim(),
@@ -721,7 +724,10 @@ function measureVerseHeight(
   for (const segment of verse.segments) {
     if (vn.visible && segment.verseNumber !== undefined)
       fullText += `${segment.verseNumber} `
-    fullText += `${segment.text} `
+    const cleanedText = segment.text
+      .replace(/[\[<][HG]\d+[\]>]/gi, "")
+      .replace(/<\/?em>/gi, "");
+    fullText += `${cleanedText} `
   }
   const transformed = applyTextTransform(
     fullText.trim(),

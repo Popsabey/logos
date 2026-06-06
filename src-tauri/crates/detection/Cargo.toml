@@ -1,5 +1,5 @@
 [package]
-name = "rhema-detection"
+name = "logos-detection"
 version = "0.1.0"
 edition = "2021"
 
@@ -13,10 +13,10 @@ log.workspace = true
 thiserror.workspace = true
 aho-corasick = "1"
 lru = "0.12"
-rhema-bible = { path = "../bible" }
+logos-bible = { path = "../bible" }
 
 # Optional heavy dependencies for real embedding / vector search
-ort = { version = "2.0.0-rc.12", optional = true }
+ort = { version = "2.0.0-rc.12", optional = true, features = ["load-dynamic"] }
 ndarray = { version = "0.16", optional = true }
 tokenizers = { version = "0.22", default-features = false, features = ["progressbar", "onig"], optional = true }
 bytemuck = { version = "1", features = ["derive"], optional = true }
