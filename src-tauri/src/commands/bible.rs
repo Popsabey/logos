@@ -159,3 +159,19 @@ pub fn get_translation_verses_for_search(
         })
         .map_err(|e| e.to_string())
 }
+
+#[tauri::command]
+pub fn get_strongs_definition(
+    state: State<'_, Mutex<AppState>>,
+    id: String,
+) -> Result<logos_bible::StrongsEntry, String> {
+    let app_state = state.lock().map_err(|e| e.to_string())?;
+    let dict = app_state
+        .strongs_dict
+        .as_ref()
+        .ok_or_else(|| "Strong's dictionary not loaded".to_string())?;
+    
+    dict.get(&id)
+        .cloned()
+        .ok_or_else(|| format!("Strong's entry {} not found", id))
+}

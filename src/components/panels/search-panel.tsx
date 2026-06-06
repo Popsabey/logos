@@ -31,6 +31,7 @@ import type { Book, Verse, SemanticSearchResult } from "@/types"
 import { Input } from "@/components/ui/input"
 import { searchContextWithFuse } from "@/lib/context-search"
 import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
+import { StrongSidePanel } from "@/components/ui/strongs-side-panel"
 
 type SearchTab = "book" | "context" 
 
@@ -562,9 +563,9 @@ export function SearchPanel() {
           </div>
 
 
-          {/* SCROLLABLE: Verse list only */}
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <div className="flex flex-col gap-0 p-2">
+            {/* SCROLLABLE: Verse list with side panel */}
+            <div className="flex flex-row flex-1 overflow-hidden">
+              <div className="flex-1 overflow-y-auto relative min-w-0">
               {currentChapter.map((verse) => (
                 <div
                   key={verse.id}
@@ -641,7 +642,8 @@ export function SearchPanel() {
                 </div>
               ))}
             </div>
-          </div>
+          <StrongSidePanel />
+        </div>
         </>
       )}
 

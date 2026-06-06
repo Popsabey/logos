@@ -3,6 +3,7 @@ import { PanelHeader } from "@/components/ui/panel-header"
 import { CanvasVerse } from "@/components/ui/canvas-verse"
 import { useBibleStore, useBroadcastStore } from "@/stores"
 import { bibleActions } from "@/hooks/use-bible"
+import { StrongsOverlay } from "@/components/ui/strongs-overlay"
 import { toVerseRenderData } from "@/hooks/use-broadcast"
 
 export function PreviewPanel() {
@@ -36,8 +37,9 @@ export function PreviewPanel() {
       className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-border bg-card"
     >
       <PanelHeader title="Program preview" />
-      <div className="flex min-h-0 flex-1 items-center justify-center p-3">
+      <div className="flex min-h-0 flex-1 items-center justify-center p-3 relative">
         <CanvasVerse theme={activeTheme} verse={verseData} />
+        <StrongsOverlay />
       </div>
     </div>
   )

@@ -15,6 +15,7 @@
     "download:bible-data": "bun run data/download-sources.ts",
     "build:bible": "bun run data/build-bible-db.ts",
     "download:model": "bun run data/download-model.ts",
+    "download:strongs": "bun run data/download-strongs.ts",
     "export:verses": "bun run data/compute-embeddings.ts",
     "quantize:model": "optimum-cli onnxruntime quantize --onnx_model models/qwen3-embedding-0.6b/ --arm64 -o models/qwen3-embedding-0.6b-int8/",
     "precompute:embeddings-onnx": "python3 data/precompute-embeddings-onnx.py",

@@ -16,8 +16,10 @@ pub mod db;
 pub mod lookup;
 pub mod search;
 pub mod crossref;
+pub mod strongs;
 
 pub use models::*;
 pub use error::*;
 pub use db::*;
+pub use strongs::*;
 pub use search::Bm25Result;

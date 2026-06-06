@@ -39,6 +39,7 @@ pub fn run() {
             commands::bible::get_cross_references,
             commands::bible::get_active_translation,
             commands::bible::set_active_translation,
+            commands::bible::get_strongs_definition,
             commands::detection::detect_verses,
             commands::detection::detection_status,
             commands::detection::semantic_search,
@@ -92,6 +93,34 @@ pub fn run() {
                 log::info!("Bible database loaded from {}", db_path.display());
             } else {
                 log::warn!("Bible database not found at {}", db_path.display());
+            }
+
+            // Load Strong's Dictionary
+            let strongs_path = app
+                .path()
+                .resource_dir()
+                .map(|p| p.join("strongs_dictionary.json"))
+                .ok()
+                .filter(|p| p.exists())
+                .unwrap_or_else(|| {
+                    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                        .join("../data/strongs_dictionary.json")
+                });
+
+            if strongs_path.exists() {
+                match logos_bible::StrongsDictionary::load(&strongs_path) {
+                    Ok(dict) => {
+                        let managed_state = app.state::<Mutex<state::AppState>>();
+                        let mut state = managed_state.lock().unwrap();
+                        state.strongs_dict = Some(dict);
+                        log::info!("Strong's Dictionary loaded from {}", strongs_path.display());
+                    }
+                    Err(e) => {
+                        log::error!("Failed to load Strong's Dictionary: {}", e);
+                    }
+                }
+            } else {
+                log::warn!("Strong's Dictionary not found at {}", strongs_path.display());
             }
 
             // Try to load ONNX embedding model and pre-computed verse index

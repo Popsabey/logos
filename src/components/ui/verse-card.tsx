@@ -1,7 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { FormattedVerseText } from "@/components/ui/formatted-verse-text"
+import { cn } from "@/lib/utils";
+import { StrongSidePanel } from "@/components/ui/strongs-side-panel";
+import { FormattedVerseText } from "@/components/ui/formatted-verse-text";
 
 function VerseCard({
   className,
@@ -12,11 +13,11 @@ function VerseCard({
   empty = false,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
-  reference?: string
-  translation?: string
-  text?: string
-  verseNumber?: number
-  empty?: boolean
+  reference?: string;
+  translation?: string;
+  text?: string;
+  verseNumber?: number;
+  empty?: boolean;
 }) {
   return (
     <div
@@ -28,31 +29,29 @@ function VerseCard({
       {...props}
     >
       {empty ? (
-        <p className="text-sm italic text-muted-foreground">
-          Select a verse to preview
-        </p>
+        <p className="text-sm italic text-muted-foreground">Select a verse to preview</p>
       ) : (
-        <>
-          {reference && (
-            <p className="text-xs font-semibold uppercase tracking-[0.05em] text-primary text-center">
-              {reference}
-              {translation && ` (${translation})`}
-            </p>
-          )}
-          {text && (
-            <p className="mt-3 px-8 font-serif text-base leading-relaxed text-white/90 text-center">
-              {verseNumber != null && (
-                <sup className="mr-0.5 align-super text-[0.6rem] text-primary/50">
-                  {verseNumber}
-                </sup>
-              )}
-              <FormattedVerseText text={text} />
-            </p>
-          )}
-        </>
+        <div className="flex w-full h-full">
+          <div className="flex-1 flex flex-col items-center justify-center overflow-auto p-2">
+            {reference && (
+              <p className="text-xs font-semibold uppercase tracking-[0.05em] text-primary text-center">
+                {reference}{translation && ` (${translation})`}
+              </p>
+            )}
+            {text && (
+              <p className="mt-3 px-8 font-serif text-base leading-relaxed text-white/90 text-center">
+                {verseNumber != null && (
+                  <sup className="mr-0.5 align-super text-[0.6rem] text-primary/50">{verseNumber}</sup>
+                )}
+                <FormattedVerseText text={text} />
+              </p>
+            )}
+          </div>
+          <StrongSidePanel />
+        </div>
       )}
     </div>
-  )
+  );
 }
 
-export { VerseCard }
+export { VerseCard };
