@@ -74,9 +74,10 @@ export function BroadcastSettings({
   const activeThemeId = useBroadcastStore((s) => s.activeThemeId)
 
   // Main output state
-  const [mainEnabled, setMainEnabled] = useState(false)
+  // Main output state
+  const [mainEnabled, setMainEnabled] = useState(true)
   const [mainThemeId, setMainThemeId] = useState(activeThemeId)
-  const [outputType, setOutputType] = useState<OutputType>("display")
+  const [outputType, setOutputType] = useState<OutputType>("ndi")
   const [monitors, setMonitors] = useState<Monitor[]>([])
   const [selectedMonitor, setSelectedMonitor] = useState("0")
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
@@ -84,7 +85,7 @@ export function BroadcastSettings({
   const [ndiResolution, setNdiResolution] = useState<NdiResolution>("r1080p")
   const [ndiFrameRate, setNdiFrameRate] = useState<NdiFrameRate>("fps24")
   const [ndiAlphaMode, setNdiAlphaMode] = useState<NdiAlphaMode>("straightAlpha")
-  const [ndiActive, setNdiActive] = useState(false)
+  const [ndiActive, setNdiActive] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
 
   // Alternate output state
@@ -159,35 +160,13 @@ export function BroadcastSettings({
     setMainThemeId(activeThemeId)
   }, [activeThemeId])
 
+  // Auto-start NDI when dialog opens and main output is NDI
   useEffect(() => {
-    if (!open) return
-
-    let timeoutId: ReturnType<typeof setTimeout> | null = null
-    const unlistenPromise = listen("broadcast:output-ready", () => {
-      useBroadcastStore.getState().syncBroadcastOutput()
-      syncNdiConfigToOutput("main", ndiActive, ndiFrameRate, ndiResolution)
-      syncNdiConfigToOutput("alt", altNdiActive, altNdiFrameRate, altNdiResolution)
-      timeoutId = setTimeout(() => {
-        useBroadcastStore.getState().syncBroadcastOutput()
-      }, 150)
-    })
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId)
-      void unlistenPromise.then((unlisten) => unlisten())
+    if (open && mainEnabled && outputType === "ndi" && !ndiActive) {
+      // Initiate NDI start silently
+      void handleToggleNdi()
     }
-  }, [
-    open,
-    isPreviewOpen,
-    ndiActive,
-    ndiFrameRate,
-    ndiResolution,
-    altNdiActive,
-    altNdiFrameRate,
-    altNdiResolution,
-    syncBroadcastOutput,
-    syncNdiConfigToOutput,
-  ])
+  }, [open, mainEnabled, outputType, ndiActive])
 
   useEffect(() => {
     if (!open || !isPreviewOpen) return
