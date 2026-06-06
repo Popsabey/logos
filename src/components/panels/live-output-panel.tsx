@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { useBroadcastStore, useBibleStore } from "@/stores"
 import { deriveLiveVerse } from "@/hooks/use-broadcast"
+import { StrongsOverlay } from "@/components/ui/strongs-overlay"
 
 export function LiveOutputPanel() {
   const isLive = useBroadcastStore((s) => s.isLive)
@@ -60,11 +61,12 @@ export function LiveOutputPanel() {
 
       <div
         className={cn(
-          "flex min-h-0 flex-1 items-center justify-center p-3 transition-opacity",
+          "flex min-h-0 flex-1 items-center justify-center p-3 transition-opacity relative",
           !isLive && "opacity-40"
         )}
       >
         <CanvasVerse theme={activeTheme} verse={verseData} />
+        <StrongsOverlay />
       </div>
     </div>
   )
