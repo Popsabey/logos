@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client"
-import { useRef, useEffect, useCallback } from "react"
+import { useRef, useEffect, useCallback, useState } from "react"
 import { invoke } from "@tauri-apps/api/core"
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow"
 import { renderVerse } from "@/lib/verse-renderer"
@@ -135,7 +135,7 @@ function BroadcastCanvas() {
       const rgbaBase64 = uint8ToBase64(imageData.data)
 
       const request: NdiFrameRequest = {
-        outputId: OUTPUT_ID,
+        output_id: OUTPUT_ID,
         width: sourceWidth,
         height: sourceHeight,
         rgbaBase64,
@@ -158,6 +158,13 @@ function BroadcastCanvas() {
   }, [pushNdiFrame])
 
   useEffect(() => {
+    // Ensure hidden broadcast window exists and open it for NDI output
+    void invoke("ensure_broadcast_window", { outputId: OUTPUT_ID }).catch(console.warn);
+    // Open the window (visible) so NDI runtime becomes active by default
+    void invoke("open_broadcast_window", { outputId: OUTPUT_ID, monitorIndex: 0 }).catch(console.warn);
+    // Start NDI after window is visible
+    void invoke("start_ndi", { outputId: OUTPUT_ID, request: { fps: ndiConfigRef.current.fps, width: ndiConfigRef.current.width, height: ndiConfigRef.current.height } }).catch(console.warn);
+
     // Set initial canvas size
     const canvas = canvasRef.current
     if (canvas) {
@@ -215,9 +222,11 @@ function BroadcastCanvas() {
     })
 
     return () => {
-      unlisten.then((fn) => fn())
-      unlistenNdiConfig.then((fn) => fn())
-    }
+       // Stop NDI when component unmounts
+       void invoke("stop_ndi", { outputId: OUTPUT_ID }).catch(console.warn);
+       unlisten.then((fn) => fn());
+       unlistenNdiConfig.then((fn) => fn());
+     }
   }, [draw, logDebug, preloadBackgroundImage, pushNdiFrame, pushNdiBurst])
 
   // Slow keepalive: push one frame every 2s if idle (prevents NDI receivers from dropping the source)
@@ -230,17 +239,42 @@ function BroadcastCanvas() {
     return () => clearInterval(timer)
   }, [pushNdiFrame])
 
+    const [ndiEnabled, setNdiEnabled] = useState(true);
+
+  const toggleNdi = useCallback(() => {
+    if (ndiEnabled) {
+      // Stop NDI runtime before closing the broadcast window
+      void invoke("stop_ndi", { outputId: OUTPUT_ID }).catch(console.warn);
+      void invoke("close_broadcast_window", { outputId: OUTPUT_ID }).catch(console.warn);
+    } else {
+      // Ensure hidden window exists, then open and start NDI
+      void invoke("ensure_broadcast_window", { outputId: OUTPUT_ID }).catch(console.warn);
+      // Ensure hidden window exists, then open and start NDI
+      void invoke("ensure_broadcast_window", { outputId: OUTPUT_ID }).catch(console.warn);
+      void invoke("open_broadcast_window", { outputId: OUTPUT_ID, monitorIndex: 0 }).catch(console.warn);
+      void invoke("start_ndi", { outputId: OUTPUT_ID, request: { fps: ndiConfigRef.current.fps, width: ndiConfigRef.current.width, height: ndiConfigRef.current.height } }).catch(console.warn);
+      // Send initial burst of frames so OBS can detect the source
+      pushNdiBurst();
+    }
+    setNdiEnabled(!ndiEnabled);
+  }, [ndiEnabled, ndiConfigRef]);
+
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "block",
-        objectFit: "contain",
-      }}
-    />
-  )
+    <>
+      <button className={"ndi-toggle " + (ndiEnabled ? "on" : "off")} onClick={toggleNdi}>
+        NDI {ndiEnabled ? "ON" : "OFF"}
+      </button>
+      <canvas
+        ref={canvasRef}
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "block",
+          objectFit: "contain",
+        }}
+      />
+    </>
+  );
 }
 
 const root = document.getElementById("broadcast-root")!

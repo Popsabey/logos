@@ -1503,6 +1503,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "07bbe89c50d7a535e539b8c17bc0b49bdb77747034daa8087407d655f3f7cc1d"
 dependencies = [
  "futures-core",
+ "futures-sink",
 ]
 
 [[package]]
@@ -2636,6 +2637,7 @@ dependencies = [
  "logos-broadcast",
  "logos-detection",
  "logos-stt",
+ "reqwest 0.12.28",
  "serde",
  "serde_json",
  "sysinfo",
@@ -2693,8 +2695,10 @@ dependencies = [
  "base64 0.22.1",
  "libloading 0.8.9",
  "log",
+ "once_cell",
  "serde",
  "serde_json",
+ "tauri",
  "thiserror 2.0.18",
 ]
 
@@ -4121,6 +4125,7 @@ dependencies = [
  "base64 0.22.1",
  "bytes",
  "encoding_rs",
+ "futures-channel",
  "futures-core",
  "futures-util",
  "h2",

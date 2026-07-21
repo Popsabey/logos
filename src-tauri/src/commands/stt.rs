@@ -408,6 +408,7 @@ pub async fn start_transcription(
                                 confidence,
                             },
                         );
+                        log::info!("Raw final transcript: {}", transcript);
 
                         // Check for translation commands (cheap, <1ms, stays inline)
                         check_translation_command(&event_app, &transcript);

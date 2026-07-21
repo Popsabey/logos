@@ -16,5 +16,18 @@ export async function invoke<T>(command: string, args?: Record<string, unknown>)
   return {} as T;
 }
 
+// Stub classes that other plugins expect
+export class Resource {
+  rid: number;
+  constructor(rid: number) { this.rid = rid; }
+  async close() {}
+}
+
+export class Channel<T = any> {
+  id: number = 0;
+  onmessage?: (message: T) => void;
+  constructor() {}
+}
+
 // Re-export anything else from core that callers might need
 export const convertFileSrc = (path: string) => path;

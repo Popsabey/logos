@@ -123,6 +123,24 @@
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.704 0.191 22.216);
     --border: oklch(1 0 0 / 10%);
+    /* NDI toggle button – glassy, positioned top‑right */
+    .ndi-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.4rem 0.8rem;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      border-radius: 0.5rem;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      z-index: 1000;
+    }
+    .ndi-toggle:hover { background: rgba(0,0,0,0.7); }
+    .ndi-toggle.on { background: rgba(0,150,0,0.55); }
+    .ndi-toggle.off { background: rgba(150,0,0,0.55); }
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.552 0.016 285.938);
     --chart-1: oklch(0.897 0.196 126.665);

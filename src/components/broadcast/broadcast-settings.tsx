@@ -160,13 +160,13 @@ export function BroadcastSettings({
     setMainThemeId(activeThemeId)
   }, [activeThemeId])
 
-  // Auto-start NDI when dialog opens and main output is NDI
-  useEffect(() => {
-    if (open && mainEnabled && outputType === "ndi" && !ndiActive) {
-      // Initiate NDI start silently
-      void handleToggleNdi()
-    }
-  }, [open, mainEnabled, outputType, ndiActive])
+  // Auto-start NDI on component mount when configured as main output
+useEffect(() => {
+  if (mainEnabled && outputType === "ndi" && !ndiActive) {
+    // Initiate NDI start silently
+    void handleToggleNdi()
+  }
+}, []);
 
   useEffect(() => {
     if (!open || !isPreviewOpen) return
