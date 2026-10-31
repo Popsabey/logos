@@ -2,8 +2,9 @@ import { useState } from "react"
 import { LevelMeter } from "@/components/ui/level-meter"
 import { LiveIndicator } from "@/components/ui/live-indicator"
 import { Badge } from "@/components/ui/badge"
-import { MicIcon, PaletteIcon, CastIcon, SunIcon, MoonIcon } from "lucide-react"
+import { MicIcon, PaletteIcon, CastIcon, SunIcon, MoonIcon, PowerIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { restart } from "@tauri-apps/plugin-process"
 import { SettingsDialog } from "@/components/settings-dialog"
 import { ThemeDesigner } from "@/components/broadcast/theme-designer"
 import { BroadcastSettings } from "@/components/broadcast/broadcast-settings"
@@ -71,6 +72,15 @@ export function TransportBar() {
         </Button>
         <ThemeDesigner />
         <SettingsDialog />
+        <Button
+          variant="destructive"
+          size="sm"
+          className="h-8 text-xs font-bold tracking-wider"
+          onClick={() => restart()}
+        >
+          <PowerIcon className="mr-1.5 size-3.5" />
+          RESTART
+        </Button>
       </div>
     </div>
   )

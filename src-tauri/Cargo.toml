@@ -57,6 +57,7 @@ tokio.workspace = true
 tauri = { version = "2.10.3", features = [] }
 tauri-plugin-log = "2"
 tauri-plugin-store = "2"
+tauri-plugin-process = "2"
 logos-audio = { path = "crates/audio" }
 logos-bible = { path = "crates/bible" }
 logos-stt = { path = "crates/stt" }
